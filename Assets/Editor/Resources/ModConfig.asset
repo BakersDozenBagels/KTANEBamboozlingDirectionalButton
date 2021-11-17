@@ -11,18 +11,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 615501dbe4f3fe94fbf4b564abb10237, type: 3}
   m_Name: ModConfig
   m_EditorClassIdentifier: 
-  id: doubleDefuser
-  title: Double Defuser
+  id: bamDirButton
+  title: Bamboozling Directional Button
   author: BakersDozenBagels
-  description: 'What in the lord''s name even is this anymore?
+  description: 'Mistake: (Noun)
+
+    An action or judgment that is misguided or wrong.
 
 
-    Requires an internet connection.
-
-    Technially possible to EFM.
-
-
-    My (other) entry for the KTaNE Modding Jam #2: Themed Unusual Interaction.'
-  version: 1.5
+    Has TP and Rule-Seed support!'
+  version: 1.0
   outputFolder: build
-  previewImage: {fileID: 2800000, guid: b9f087b9cb8ef2c4198eaae6a95bd9f3, type: 3}
+  previewImage: {fileID: 2800000, guid: e0ef39b916bf1dc42abc1d54f473e2fe, type: 3}
