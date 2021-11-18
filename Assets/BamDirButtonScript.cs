@@ -29,7 +29,7 @@ public class BamDirButtonScript : MonoBehaviour
     private KMBombModule _module;
 
     private static int _idc;
-    private int _id = ++_idc, _upColor, _downColor, _buttonColor, _requiredPresses, _presses, _stagesDone, _stagesRequired = 3;
+    private int _id = ++_idc, _upColor, _downColor, _buttonColor, _requiredPresses, _presses, _stagesDone, _stagesRequired = 1;
     private List<Func<bool>> _rules, _releaseRules;
     private Func<bool> _rule, _releaseRule;
     private int[][] _numsTable;
@@ -116,16 +116,11 @@ public class BamDirButtonScript : MonoBehaviour
     {
         _stagesDone++;
         _presses = 0;
-        for(int i = 0; i < Math.Min(_stagesDone, 3); i++)
+        for(int i = 0; i < 3; i++)
         {
             _LEDs[i].material.color = Color.green;
             _LEDLights[i].enabled = true;
             _LEDLights[i].color = Color.green;
-        }
-        for(int i = _stagesDone; i < _LEDs.Length; i++)
-        {
-            _LEDs[i].material.color = Color.black;
-            _LEDLights[i].enabled = false;
         }
         if(_stagesDone >= _stagesRequired)
         {
@@ -194,7 +189,7 @@ public class BamDirButtonScript : MonoBehaviour
         StartCoroutine(AnimateStrike());
         _presses = 0;
         _stagesDone = 0;
-        _stagesRequired = 3;
+        _stagesRequired = 1;
         _strikeLeeway = true;
     }
 
@@ -356,10 +351,10 @@ public class BamDirButtonScript : MonoBehaviour
             yield break;
         }
 
-        if(!_uncapCheck && _stagesRequired == 3 && (m = Regex.Match(command.ToLowerInvariant(), @"^\s*uncap\s*$")).Success)
+        if(!_uncapCheck && _stagesRequired == 1 && (m = Regex.Match(command.ToLowerInvariant(), @"^\s*uncap\s*$")).Success)
         {
             yield return null;
-            yield return "sendtochat Are you sure about that? Send the command again to confirm, or any other command to cancel.";
+            yield return "sendtochat Are you sure about that? Send the command again to confirm, or any other command to cancel. (You will get 5 stages.)";
             _uncapCheck = true;
             yield break;
         }
@@ -370,7 +365,7 @@ public class BamDirButtonScript : MonoBehaviour
             if((m = Regex.Match(command.ToLowerInvariant(), @"^\s*uncap\s*$")).Success)
             {
                 yield return "sendtochat You've asked for it...";
-                _stagesRequired = Math.Max(_info.GetModuleNames().Count, 7);
+                _stagesRequired = 5;
                 _audio.PlaySoundAtTransform("Uncap", transform);
             }
             else
