@@ -341,6 +341,8 @@ public class BamDirButtonScript : MonoBehaviour
         {
             yield return null;
             _upSel.OnInteract();
+            if(_stagesRequired > 1 && _presses == _requiredPresses && _presses % 2 == 0 && _stagesDone + 1 >= _stagesRequired)
+                yield return "awardpointsonsolve " + 8 * (_stagesRequired - 1);
             yield break;
         }
 
@@ -348,14 +350,30 @@ public class BamDirButtonScript : MonoBehaviour
         {
             yield return null;
             _downSel.OnInteract();
+            if(_stagesRequired > 1 && _presses == _requiredPresses && _presses % 2 == 1 && _stagesDone + 1 >= _stagesRequired)
+                yield return "awardpointsonsolve " + 8 * (_stagesRequired - 1);
             yield break;
         }
 
         if(!_uncapCheck && _stagesRequired == 1 && (m = Regex.Match(command.ToLowerInvariant(), @"^\s*uncap\s*$")).Success)
         {
             yield return null;
-            yield return "sendtochat Are you sure about that? Send the command again to confirm, or any other command to cancel. (You will get 5 stages.)";
+            yield return "sendtochat Are you sure about that? Send the command again to confirm, or any other command to cancel. (You will get 3 stages.)";
             _uncapCheck = true;
+            yield break;
+        }
+
+        if(!_uncapCheck && _stagesRequired == 3 && (m = Regex.Match(command.ToLowerInvariant(), @"^\s*uncap\s*$")).Success)
+        {
+            yield return null;
+            yield return "sendtochat Again? Are you sure? (You will get 5 stages.)";
+            _uncapCheck = true;
+            yield break;
+        }
+
+        if(!_uncapCheck && _stagesRequired == 5 && (m = Regex.Match(command.ToLowerInvariant(), @"^\s*uncap\s*$")).Success)
+        {
+            yield return "sendtochat No more.";
             yield break;
         }
 
@@ -365,8 +383,9 @@ public class BamDirButtonScript : MonoBehaviour
             if((m = Regex.Match(command.ToLowerInvariant(), @"^\s*uncap\s*$")).Success)
             {
                 yield return "sendtochat You've asked for it...";
-                _stagesRequired = 5;
+                _stagesRequired += 2;
                 _audio.PlaySoundAtTransform("Uncap", transform);
+                _uncapCheck = false;
             }
             else
             {
